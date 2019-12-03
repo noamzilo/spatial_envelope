@@ -32,9 +32,13 @@ class DataSet(object):
         n_images = np.sum([len(images_by_types[t]) for t in images_by_types])
         images_x = np.zeros((n_images, self._shape[0], self._shape[1]))
         images_y = np.zeros(n_images)
-        
-        for t in images_by_types:
-            images_x[]
+
+        im_index = 0
+        for i, t in enumerate(images_by_types):
+            for im in images_by_types[t]:
+                images_x[im_index, :, :] = im
+                images_y[im_index] = i
+                im_index += 1
 
         flat_paths = [os.path.abspath(p) for typ in paths_by_type for p in paths_by_type[typ]]
         all_images = [cv2.imread(p) for p in flat_paths if os.path.isfile(p)]
