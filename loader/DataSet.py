@@ -8,9 +8,12 @@ class DataSet(object):
     def __init__(self):
         self._images = None
         self._shape = (256, 256)
+        self._images_x = None
+        self._images_y = None
 
     def from_path(self, path):
         image_types = ["mountain", "coast"]
+        # image_tags = [i for i in range(len(image_types))]
         paths_by_type = {t: [] for t in image_types}
         valid_images = [".jpg",]
         for f in os.listdir(path):
@@ -23,27 +26,11 @@ class DataSet(object):
                     paths_by_type[typ].append(found_path)
                     break
 
-        images_by_types = {t: [] for t in image_types}
-        for typ in paths_by_type:
-            for path in paths_by_type[typ]:
-                im = cv2.imread(path)
-                images_by_types[typ].append(im)
+        flat_paths = [(os.path.abspath(p), tag) for tag, typ in enumerate(paths_by_type) for p in paths_by_type[typ]]
+        all_images = [(cv2.imread(p), t) for p, t in flat_paths if os.path.isfile(p)]
 
-        n_images = np.sum([len(images_by_types[t]) for t in images_by_types])
-        images_x = np.zeros((n_images, self._shape[0], self._shape[1]))
-        images_y = np.zeros(n_images)
-
-        im_index = 0
-        for i, t in enumerate(images_by_types):
-            for im in images_by_types[t]:
-                images_x[im_index, :, :] = im
-                images_y[im_index] = i
-                im_index += 1
-
-        flat_paths = [os.path.abspath(p) for typ in paths_by_type for p in paths_by_type[typ]]
-        all_images = [cv2.imread(p) for p in flat_paths if os.path.isfile(p)]
-        cv2.imshow("example", all_images[5])
-        cv2.waitKey(0)
+        self._images_x = np.array([datum[0] for datum in all_images])
+        self._images_y = np.array([datum[1] for datum in all_images])
 
 
 if __name__ == "__main__":
