@@ -1,5 +1,6 @@
 from loader.DataSet import load_default
 import cv2
+from sklearn.cluster import KMeans
 
 
 class SiftDetector(object):

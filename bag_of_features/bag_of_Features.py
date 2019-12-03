@@ -1,7 +1,17 @@
-from loader.DataSet import DataSet
+from loader.DataSet import load_default
+from features.Sift import SiftDetector
+
 
 class BagOfFratures(object):
-    def __init__(self, data_set):
-        self._data_set = data_set
-        self._x_train, self._x_test, self._y_train, self._y_test =\
-            self._data_set.x_train, self._data_set.x_test, self._data_set.y_train, self._data_set.y_test
+    def __init__(self, featurs):
+        self._featues = featurs
+
+
+if __name__ == "__main__":
+    def main():
+        data_set = load_default()
+        sift_detector = SiftDetector(data_set)
+        bof = BagOfFratures(sift_detector)
+        
+
+    main()
