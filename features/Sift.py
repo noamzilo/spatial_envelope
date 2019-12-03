@@ -14,7 +14,7 @@ class SiftDetector(object):
         # retval = cv.xfeatures2d.SIFT_create([,nfeatures[,nOctaveLayers[,contrastThreshold[,edgeThreshold[,sigma]]]]])
         train_features = []
         for i in range(self._n_train):
-            features = self._detector.detect(self._data_set.x_train, None)
+            features = self._detector.detect(self._data_set.x_train[i, :, :], None)
             train_features.append(features)
         hi=5
 
