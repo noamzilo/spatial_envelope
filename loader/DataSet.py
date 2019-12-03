@@ -2,6 +2,7 @@ import os
 import cv2
 import sklearn
 import numpy as np
+from sklearn.model_selection import train_test_split
 
 
 class DataSet(object):
@@ -10,8 +11,9 @@ class DataSet(object):
         self._shape = (256, 256)
         self._images_x = None
         self._images_y = None
+        self._x_train, self._x_test, self._y_train, self._y_test = None, None, None, None
 
-    def from_path(self, path):
+    def load_from_path(self, path):
         image_types = ["mountain", "coast"]
         # image_tags = [i for i in range(len(image_types))]
         paths_by_type = {t: [] for t in image_types}
@@ -32,12 +34,19 @@ class DataSet(object):
         self._images_x = np.array([datum[0] for datum in all_images])
         self._images_y = np.array([datum[1] for datum in all_images])
 
+    def split(self):
+        x = self._images_x
+        y = self._images_y
+        self._x_train, self._x_test, self._y_train, self._y_test = \
+            train_test_split(x, y, test_size=0.33, random_state=42)
+
 
 if __name__ == "__main__":
     def main():
         loader = DataSet()
         path = '../spatial_envelope_256x256_static_8outdoorcategories'
         assert os.path.isdir(path)
-        loader.from_path(path)
+        loader.load_from_path(path)
+        loader.split()
 
     main()
