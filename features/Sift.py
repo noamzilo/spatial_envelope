@@ -16,13 +16,13 @@ class SiftDetector(object):
     def calculate_features_train(self):
         self.train_features = []
         for i in range(self._n_train):
-            features = self._detector.detect(self._x_train[i, :, :], None)
+            features = self._detector.detectAndCompute(self._x_train[i, :, :], None)
             self.train_features.append(features)
 
     def calculate_features_test(self):
         self.test_features = []
         for i in range(self._n_test):
-            features = self._detector.detect(self._x_test[i, :, :], None)
+            features = self._detector.detectAndCompute(self._x_test[i, :, :], None)
             self.test_features.append(features)
 
 if __name__== "__main__":
