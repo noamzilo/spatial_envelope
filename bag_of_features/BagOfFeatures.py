@@ -27,24 +27,25 @@ class BagOfFratures(object):
         cluster_histogram_per_image = []
         for image_descriptors in descriptors_per_image:
             centers_ind = self._k_means_obj.predict(image_descriptors)
-            histogram = np.histogram(centers_ind, bins=self._k)
+            histogram, bins = np.histogram(centers_ind, bins=self._k)
             cluster_histogram_per_image.append(histogram)
         return cluster_histogram_per_image
     #
     # def predict(self, cluster_histogram_per_image):
 
 
-
+def calculate_bag_of_features_for_default_dataset():
+    data_set = load_default()
+    sift_detector = SiftDetector(data_set)
+    sift_detector.calculate_features_train()
+    bof = BagOfFratures(k=100)
+    bof.calculate_k_means(sift_detector.train_descriptors)
+    train_bag_of_features = bof.calculate_cluster_histogram_per_image(sift_detector.train_descriptors)
+    test_bag_of_features = bof.calculate_cluster_histogram_per_image(sift_detector.test_descriptors)
+    return train_bag_of_features, test_bag_of_features
 
 if __name__ == "__main__":
     def main():
-        data_set = load_default()
-        sift_detector = SiftDetector(data_set)
-        sift_detector.calculate_features_train()
-        bof = BagOfFratures(k=100)
-        bof.calculate_k_means(sift_detector.train_descriptors)
-        train_bag_of_features = bof.calculate_cluster_histogram_per_image(sift_detector.train_descriptors)
-        hi=5
-        
+        train_bag_of_features, test_bag_of_features = calculate_bag_of_features_for_default_dataset()
 
     main()

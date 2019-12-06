@@ -2,7 +2,8 @@ from sklearn.svm import LinearSVC
 from loader.DataSet import load_default
 from features.Sift import SiftDetector
 import numpy as np
-from bag_of_features.BagOfFeatures import BagOfFratures
+from bag_of_features.BagOfFeatures import calculate_bag_of_features_for_default_dataset
+
 
 
 class Svm(object):
@@ -23,11 +24,9 @@ class Svm(object):
 if __name__ == "__main__":
     def main():
         data_set = load_default()
-        sift_detector = SiftDetector(data_set)
-        sift_detector.calculate_features_train()
-        train_bof = BagOfFratures(sift_detector.train_keypoints, sift_detector.train_descriptors, k=100)
-        train_bof.calculate_k_means()
-        train_bof.fit_train_to_centers()
+        train_bag_of_features, test_bag_of_features = calculate_bag_of_features_for_default_dataset()
 
-        train_svm = Svm()
+        svm = Svm()
+        svm.train()
+
     main()
