@@ -35,8 +35,8 @@ class DataSet(object):
         self._images_x = np.array([datum[0] for datum in all_images_tagged])
         self._images_y = np.array([datum[1] for datum in all_images_tagged])
 
-        self._images_x = self._images_x[np.random.choice(self._images_x.shape[0], self._max_images_used)]
-        self._images_y = self._images_y[np.random.choice(self._images_y.shape[0], self._max_images_used)]
+        self._images_x = np.random.shuffle(self._images_x)[:self._max_images_used]
+        self._images_y = np.random.shuffle(self._images_y)[:self._max_images_used]
 
     def split(self, test_size=0.2):
         x = self._images_x

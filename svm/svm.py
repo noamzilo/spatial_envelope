@@ -12,7 +12,7 @@ class Svm(object):
 
     def predict_and_evaluate(self, features, labels):
         preds = self._classifier.predict(features)
-        correct = np.equal(preds, labels)
+        correct = np.sum(np.equal(preds, labels)) / len(labels)
         print(f"correct %: {correct}")
 
 
