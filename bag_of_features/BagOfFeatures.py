@@ -38,6 +38,7 @@ def calculate_bag_of_features_for_default_dataset():
     data_set = load_default()
     sift_detector = SiftDetector(data_set)
     sift_detector.calculate_features_train()
+    sift_detector.calculate_features_test()
     bof = BagOfFratures(k=100)
     bof.calculate_k_means(sift_detector.train_descriptors)
     train_bag_of_features = bof.calculate_cluster_histogram_per_image(sift_detector.train_descriptors)
