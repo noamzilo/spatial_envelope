@@ -5,7 +5,7 @@ import numpy as np
 
 
 class BagOfFratures(object):
-    def __init__(self, keppoints_per_image, descriptors_per_image, k=100):
+    def __init__(self, k=100):
         self._k = k
         self._k_means_obj = KMeans(n_clusters=self._k,
                                    init='k-means++',
@@ -18,23 +18,22 @@ class BagOfFratures(object):
                                    copy_x=True,
                                    n_jobs=-1,  # use max processors possible in parallel
                                    algorithm='auto')
-        self._keppoints_per_image = keppoints_per_image
-        self._descriptors_per_image = descriptors_per_image
-        n_images = len(self._keppoints_per_image)
-        assert len(self._descriptors_per_image) == n_images
 
-        self._cluster_histogram_per_image = None
-
-    def calculate_k_means(self):
-        flat_descriptors = np.vstack(self._descriptors_per_image)
+    def calculate_k_means(self, train_descriptors_per_image):
+        flat_descriptors = np.vstack(train_descriptors_per_image)
         self._k_means_obj.fit(flat_descriptors)
 
-    def fit_train_to_centers(self):
-        self._cluster_histogram_per_image = []
-        for image_descriptors in self._descriptors_per_image:
+    def calculate_cluster_histogram_per_image(self, descriptors_per_image):
+        cluster_histogram_per_image = []
+        for image_descriptors in descriptors_per_image:
             centers_ind = self._k_means_obj.predict(image_descriptors)
             histogram = np.histogram(centers_ind, bins=self._k)
-            self._cluster_histogram_per_image.append(histogram)
+            cluster_histogram_per_image.append(histogram)
+        return cluster_histogram_per_image
+    #
+    # def predict(self, cluster_histogram_per_image):
+
+
 
 
 if __name__ == "__main__":
@@ -42,9 +41,10 @@ if __name__ == "__main__":
         data_set = load_default()
         sift_detector = SiftDetector(data_set)
         sift_detector.calculate_features_train()
-        bof = BagOfFratures(sift_detector.train_keypoints, sift_detector.train_descriptors, k=100)
-        bof.calculate_k_means()
-        bof.fit_train_to_centers()
+        bof = BagOfFratures(k=100)
+        bof.calculate_k_means(sift_detector.train_descriptors)
+        train_bag_of_features = bof.calculate_cluster_histogram_per_image(sift_detector.train_descriptors)
+        hi=5
         
 
     main()

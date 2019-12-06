@@ -14,7 +14,7 @@ class DataSet(object):
         self._image_tags = [i for i in range(len(self._image_types))]
         self.x_train, self.x_test, self.y_train, self.y_test = None, None, None, None
 
-        self._max_images_used = 100
+        self._max_images_used = 100  # TODO delete this!
 
     def load_from_path(self, path):
         paths_by_type = {t: [] for t in self._image_types}
