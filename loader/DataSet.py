@@ -15,7 +15,8 @@ class DataSet(object):
         self._image_tags = [i for i in range(len(self._image_types))]
         self.x_train, self.x_test, self.y_train, self.y_test = None, None, None, None
 
-        self._max_images_used = 100  # TODO delete this!
+        self._is_debug = True
+        self._max_n_images_used_for_debug = 100
 
     def load_from_path(self, path):
         paths_by_type = {t: [] for t in self._image_types}
@@ -35,12 +36,13 @@ class DataSet(object):
 
         self._images_x = np.array([datum[0] for datum in all_images_tagged])
         self._images_y = np.array([datum[1] for datum in all_images_tagged])
+        max_images_used = len(self._images_y) if not self._is_debug else self._max_n_images_used_for_debug
 
         # shuffle for sampling less than all of the data set
         random_inds = np.arange(self._images_x.shape[0])
         np.random.shuffle(random_inds)
-        self._images_x = self._images_x[random_inds[:self._max_images_used], :, :]
-        self._images_y = self._images_y[random_inds[:self._max_images_used]]
+        self._images_x = self._images_x[random_inds[:max_images_used], :, :]
+        self._images_y = self._images_y[random_inds[:max_images_used]]
 
     def split(self, test_size=0.2):
         x = self._images_x
