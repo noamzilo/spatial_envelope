@@ -1,9 +1,6 @@
 from sklearn.svm import LinearSVC
-from loader.DataSet import load_default
-from features.Sift import SiftDetector
 import numpy as np
 from bag_of_features.BagOfFeatures import calculate_bag_of_features_for_default_dataset
-
 
 
 class Svm(object):
@@ -23,10 +20,11 @@ class Svm(object):
 
 if __name__ == "__main__":
     def main():
-        data_set = load_default()
-        train_bag_of_features, test_bag_of_features = calculate_bag_of_features_for_default_dataset()
+        train_bag_of_features, test_bag_of_features, train_labels, test_labels \
+            = calculate_bag_of_features_for_default_dataset()
 
         svm = Svm()
-        svm.train()
+        svm.train(train_bag_of_features, train_labels)
+        svm.predict_and_evaluate(test_bag_of_features, test_labels)
 
     main()

@@ -42,10 +42,13 @@ def calculate_bag_of_features_for_default_dataset():
     bof.calculate_k_means(sift_detector.train_descriptors)
     train_bag_of_features = bof.calculate_cluster_histogram_per_image(sift_detector.train_descriptors)
     test_bag_of_features = bof.calculate_cluster_histogram_per_image(sift_detector.test_descriptors)
-    return train_bag_of_features, test_bag_of_features
+
+    train_labels, test_labels = data_set.y_train, data_set.y_test
+    return train_bag_of_features, test_bag_of_features, train_labels, test_labels
 
 if __name__ == "__main__":
     def main():
-        train_bag_of_features, test_bag_of_features = calculate_bag_of_features_for_default_dataset()
+        train_bag_of_features, test_bag_of_features, train_labels, test_labels\
+            = calculate_bag_of_features_for_default_dataset()
 
     main()
