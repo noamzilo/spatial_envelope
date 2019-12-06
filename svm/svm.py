@@ -8,8 +8,6 @@ class Svm(object):
         self._classifier = LinearSVC(random_state=0, tol=1e-5)
 
     def train(self, features, labels):
-        n_samples = len(features)
-        assert features.shape[0] == n_samples
         self._classifier.fit(features, labels)
 
     def predict_and_evaluate(self, features, labels):
