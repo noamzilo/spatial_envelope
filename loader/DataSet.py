@@ -2,6 +2,7 @@ import os
 import cv2
 import numpy as np
 from sklearn.model_selection import train_test_split
+import random
 
 
 class DataSet(object):
@@ -35,8 +36,11 @@ class DataSet(object):
         self._images_x = np.array([datum[0] for datum in all_images_tagged])
         self._images_y = np.array([datum[1] for datum in all_images_tagged])
 
-        self._images_x = np.random.shuffle(self._images_x)[:self._max_images_used]
-        self._images_y = np.random.shuffle(self._images_y)[:self._max_images_used]
+        # shuffle for sampling less than all of the data set
+        random_inds = np.arange(self._images_x.shape[0])
+        np.random.shuffle(random_inds)
+        self._images_x = self._images_x[random_inds[:self._max_images_used], :, :]
+        self._images_y = self._images_y[random_inds[:self._max_images_used]]
 
     def split(self, test_size=0.2):
         x = self._images_x
