@@ -41,14 +41,13 @@ class Svm(object):
         roc_auc = auc(fpr, tpr)
 
         plt.figure()
-        plt.title("Roc curve")
+        plt.title(f"Roc curve, auc={roc_auc}")
         plt.xlabel('False positive ratio')
         plt.xlim(0, 1)
         plt.ylim(0, 1)
         plt.ylabel('True positive ratio')
         plt.plot(fpr, tpr)
         plt.show(block=True)
-
         hi=5
 
 def calculate_svm_roc(train_bag_of_features, test_bag_of_features, train_labels, test_labels):
