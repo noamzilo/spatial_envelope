@@ -30,7 +30,7 @@ def calculate_svm_roc(train_bag_of_features, test_bag_of_features, train_labels,
     true_positive_ratios = np.zeros(num_c_tries)
     false_positive_ratios = np.zeros(num_c_tries)
     for i, c in enumerate(available_cs):
-        svm = Svm(c=1)
+        svm = Svm(c=c)
         svm.train(train_bag_of_features, train_labels)
         predicions = svm.predict(test_bag_of_features)
         confusion = confusion_matrix(test_labels, predicions)
