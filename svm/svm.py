@@ -40,8 +40,15 @@ class Svm(object):
         fpr, tpr, _ = roc_curve(test_labels, y_score)
         roc_auc = auc(fpr, tpr)
 
-        fpr["micro"], tpr["micro"], _ = roc_curve(test_labels.ravel(), y_score.ravel())
-        roc_auc["micro"] = auc(fpr["micro"], tpr["micro"])
+        plt.figure()
+        plt.title("Roc curve")
+        plt.xlabel('False positive ratio')
+        plt.xlim(0, 1)
+        plt.ylim(0, 1)
+        plt.ylabel('True positive ratio')
+        plt.scatter(fpr, tpr)
+        plt.show(block=True)
+
         hi=5
 
 def calculate_svm_roc(train_bag_of_features, test_bag_of_features, train_labels, test_labels):
