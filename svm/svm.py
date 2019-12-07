@@ -36,9 +36,8 @@ def calculate_svm_roc(train_bag_of_features, test_bag_of_features, train_labels,
         confusion = confusion_matrix(test_labels, predicions)
         tn, fn, tp, fp = confusion[0, 0], confusion[1, 0], confusion[0, 1], confusion[1, 1]  # true/false positive/negative
 
-        total_true = tp + fp
-        true_positive_ratios[i] = tp / total_true
-        false_positive_ratios[i] = fp / total_true
+        true_positive_ratios[i] = tp / (tp + fn)
+        false_positive_ratios[i] = fp / (fp + tn)
 
     return np.array(true_positive_ratios), np.array(false_positive_ratios)
 
@@ -55,7 +54,7 @@ def show_roc(true_positives, false_positives):
     plt.title("Roc curve")
     plt.xlabel('False positive ratio')
     plt.ylabel('True positive ratio')
-    plt.plot(false_positives, true_positives)
+    plt.scatter(false_positives, true_positives)
     plt.show(block=True)
     print(f"roc auc: {roc_auc}")
 
