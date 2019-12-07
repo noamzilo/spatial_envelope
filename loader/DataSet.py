@@ -15,7 +15,7 @@ class DataSet(object):
         self._image_tags = [i for i in range(len(self._image_types))]
         self.x_train, self.x_test, self.y_train, self.y_test = None, None, None, None
 
-        self._is_debug = False
+        self._is_debug = True
         self._max_n_images_used_for_debug = 100
 
     def load_from_path(self, path):
@@ -52,12 +52,12 @@ class DataSet(object):
 
 
 def load_default():
-    data_Set = DataSet()
+    data_set = DataSet()
     path = '../spatial_envelope_256x256_static_8outdoorcategories'
     assert os.path.isdir(path)
-    data_Set.load_from_path(path)
-    data_Set.split(test_size=0.2)
-    return data_Set
+    data_set.load_from_path(path)
+    data_set.split(test_size=0.2)
+    return data_set
 
 if __name__ == "__main__":
     def main():
