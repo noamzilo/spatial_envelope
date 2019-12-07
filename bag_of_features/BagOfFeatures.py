@@ -21,6 +21,7 @@ class BagOfFratures(object):
 
     def calculate_k_means(self, train_descriptors_per_image):
         flat_descriptors = np.vstack(train_descriptors_per_image)
+        print("fitting k-means. this takes forever, please wait.")
         self._k_means_obj.fit(flat_descriptors)
 
     def calculate_cluster_histogram_per_image(self, descriptors_per_image):
