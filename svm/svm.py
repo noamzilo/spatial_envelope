@@ -9,6 +9,7 @@ class Svm(object):
     def __init__(self):
         self._classifier = None
 
+        self._cs = []
         self._fprs = []
         self._tprs = []
         self._aucs = []
@@ -16,6 +17,7 @@ class Svm(object):
     def train(self, features, labels, c):
         self._classifier = SVC(random_state=0, tol=1e-5, kernel="linear", probability=True, C=c)
         self._classifier.fit(features, labels)
+        self._cs.append(c)
 
     def predict(self, features):
         predicions = self._classifier.predict(features)
@@ -38,7 +40,8 @@ class Svm(object):
         plt.xlim(0, 1)
         plt.ylim(0, 1)
         plt.ylabel('True positive ratio')
-        plt.plot(self._fprs, self._tprs)
+        for fpr, tpr, c, auc_ in zip(self._fprs, self._tprs, self._cs, self._aucs):
+            plt.plot(fpr, tpr, label=f"c={c}, auc={auc_}")
         plt.show(block=True)
 
 
@@ -48,9 +51,10 @@ if __name__ == "__main__":
             = calculate_bag_of_features_for_default_dataset()
 
         c_values = np.logspace(-5, 5, 10)
+        svm = Svm()
         for c in c_values:
-            svm = Svm()
             svm.train(train_bag_of_features, train_labels, c)
             svm.calculate_roc(test_bag_of_features, test_labels)
 
+        svm.plot_rocs()
     main()
