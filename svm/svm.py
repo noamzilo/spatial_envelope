@@ -58,6 +58,7 @@ if __name__ == "__main__":
         for c in c_values:
             svm.train(train_bag_of_features, train_labels, c)
             svm.calculate_roc(test_bag_of_features, test_labels)
+            print(f"done calculating roc for c={c}")
 
         svm.plot_rocs()
     main()
