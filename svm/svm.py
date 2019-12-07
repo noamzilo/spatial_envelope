@@ -46,7 +46,7 @@ class Svm(object):
         plt.xlim(0, 1)
         plt.ylim(0, 1)
         plt.ylabel('True positive ratio')
-        plt.scatter(fpr, tpr)
+        plt.plot(fpr, tpr)
         plt.show(block=True)
 
         hi=5
