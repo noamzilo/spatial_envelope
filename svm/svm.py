@@ -10,6 +10,8 @@ from sklearn.model_selection import GridSearchCV
 from tempfile import mkdtemp
 from sklearn.externals.joblib import Memory
 
+from sklearn.metrics import roc_curve, auc
+
 
 class Svm(object):
     def __init__(self, c):
@@ -24,13 +26,27 @@ class Svm(object):
         return predicions
 
     def show_roc(self, test_bag_of_features, test_labels):
-        c = self._c
-        w = list(self._classifier.coef_)
-        b = self._classifier.intercept_[0]
-        y_hat = test_bag_of_features.apply(lambda s: np.sum(np.array(s) * np.array(w)) + b, axis=1)
-        y_hat = (y_hat > c)
-        hi=5
+        # c = self._c
+        # w = list(self._classifier.coef_)
+        # b = self._classifier.intercept_[0]
+        # y_hat = test_bag_of_features.apply(lambda s: np.sum(np.array(s) * np.array(w)) + b, axis=1)
+        # y_hat = (y_hat > c)
+        # hi=5
 
+
+        #_____________________
+        n_classes = 2
+        y_score = self._classifier.decision_function(test_bag_of_features)
+        fpr = dict()
+        tpr = dict()
+        roc_auc = dict()
+        for i in range(n_classes):
+            fpr[i], tpr[i], _ = roc_curve(test_labels[i], y_score[i])
+            roc_auc[i] = auc(fpr[i], tpr[i])
+
+        fpr["micro"], tpr["micro"], _ = roc_curve(test_labels.ravel(), y_score.ravel())
+        roc_auc["micro"] = auc(fpr["micro"], tpr["micro"])
+        hi=5
 
 def calculate_svm_roc(train_bag_of_features, test_bag_of_features, train_labels, test_labels):
     num_c_tries = 1000
@@ -73,10 +89,7 @@ if __name__ == "__main__":
             = calculate_bag_of_features_for_default_dataset()
         svm = Svm(c=1)
         svm.train(train_bag_of_features, train_labels)
-        
+        svm.show_roc(test_bag_of_features, test_labels)
         # tpr, fpr = calculate_svm_roc(train_bag_of_features, test_bag_of_features, train_labels, test_labels)
-        # show_roc(tpr, fpr)
-
-
 
     main()
