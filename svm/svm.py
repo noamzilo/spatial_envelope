@@ -53,7 +53,7 @@ if __name__ == "__main__":
         train_bag_of_features, test_bag_of_features, train_labels, test_labels \
             = calculate_bag_of_features_for_default_dataset()
 
-        c_values = [1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e0, 1e1, 1e2, 1e3, 1e4, 1e5]
+        c_values = [1e-3, 1e-2, 1e-1, 1e0, 1e1, 1e2, 1e3]
         svm = Svm()
         for c in c_values:
             svm.train(train_bag_of_features, train_labels, c)
