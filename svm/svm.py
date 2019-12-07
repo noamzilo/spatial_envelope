@@ -35,7 +35,6 @@ class Svm(object):
 
     def plot_rocs(self):
         plt.figure()
-        # plt.title(f"Roc curve, auc={roc_auc}")
         plt.xlabel('False positive ratio')
         plt.xlim(0, 1)
         plt.ylim(0, 1)

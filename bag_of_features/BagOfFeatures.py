@@ -25,10 +25,12 @@ class BagOfFratures(object):
 
     def calculate_cluster_histogram_per_image(self, descriptors_per_image):
         cluster_histogram_per_image = []
-        for image_descriptors in descriptors_per_image:
+        for i, image_descriptors in enumerate(descriptors_per_image):
             centers_ind = self._k_means_obj.predict(image_descriptors)
             histogram, bins = np.histogram(centers_ind, bins=self._k)
             cluster_histogram_per_image.append(histogram)
+            if i % 20 == 0:
+                print(f"done calculating histogram for image #{i}")
         return cluster_histogram_per_image
     #
     # def predict(self, cluster_histogram_per_image):
