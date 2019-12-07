@@ -25,8 +25,8 @@ class Svm(object):
 
 
 def calculate_svm_roc(train_bag_of_features, test_bag_of_features, train_labels, test_labels):
-    num_c_tries = 10
-    available_cs = np.logspace(start=-2, stop=5.0, num=num_c_tries, base=10.0)
+    num_c_tries = 100
+    available_cs = np.logspace(start=-5, stop=10.0, num=num_c_tries, base=10.0)
     true_positive_ratios = np.zeros(num_c_tries)
     false_positive_ratios = np.zeros(num_c_tries)
     for i, c in enumerate(available_cs):
@@ -37,10 +37,10 @@ def calculate_svm_roc(train_bag_of_features, test_bag_of_features, train_labels,
         tn, fn, tp, fp = confusion[0, 0], confusion[1, 0], confusion[0, 1], confusion[1, 1]  # true/false positive/negative
 
         total_true = tp + fp
-        false_positive_ratios[i] = tp / total_true
+        true_positive_ratios[i] = tp / total_true
         false_positive_ratios[i] = fp / total_true
 
-    return np.array(true_positive_ratios), np.array(false_positive_ratios)/len(test_labels)
+    return np.array(true_positive_ratios), np.array(false_positive_ratios)
 
     # svm = Svm(c=1)
     # svm.train(train_bag_of_features, train_labels)
