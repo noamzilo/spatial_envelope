@@ -41,20 +41,15 @@ def calculate_svm_roc(train_bag_of_features, test_bag_of_features, train_labels,
 
     return np.array(true_positive_ratios), np.array(false_positive_ratios)
 
-    # svm = Svm(c=1)
-    # svm.train(train_bag_of_features, train_labels)
-    # # predicions = svm.predict(test_bag_of_features)
-    # svm.show_roc(test_bag_of_features, test_labels)
-
 
 def show_roc(true_positives, false_positives):
     assert true_positives.shape[0] == false_positives.shape[0]
-    roc_auc = auc(false_positives, true_positives)
+    # roc_auc = auc(false_positives, true_positives)
     plt.figure()
     plt.title("Roc curve")
     plt.xlabel('False positive ratio')
     plt.ylabel('True positive ratio')
-    plt.scatter(false_positives, true_positives)
+    plt.plot(false_positives, true_positives)
     plt.show(block=True)
     print(f"roc auc: {roc_auc}")
 
