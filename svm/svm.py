@@ -35,14 +35,10 @@ class Svm(object):
 
 
         #_____________________
-        n_classes = 2
         y_score = self._classifier.decision_function(test_bag_of_features)
-        fpr = dict()
-        tpr = dict()
-        roc_auc = dict()
-        for i in range(n_classes):
-            fpr[i], tpr[i], _ = roc_curve(test_labels[i], y_score[i])
-            roc_auc[i] = auc(fpr[i], tpr[i])
+
+        fpr, tpr, _ = roc_curve(test_labels, y_score)
+        roc_auc = auc(fpr, tpr)
 
         fpr["micro"], tpr["micro"], _ = roc_curve(test_labels.ravel(), y_score.ravel())
         roc_auc["micro"] = auc(fpr["micro"], tpr["micro"])
