@@ -2,7 +2,6 @@ import os
 import cv2
 import numpy as np
 from sklearn.model_selection import train_test_split
-import random
 
 
 class DataSet(object):
@@ -15,7 +14,7 @@ class DataSet(object):
         self._image_tags = [i for i in range(len(self._image_types))]
         self.x_train, self.x_test, self.y_train, self.y_test = None, None, None, None
 
-        self._is_debug = True
+        self._is_debug = False
         self._max_n_images_used_for_debug = 100
 
     def load_from_path(self, path):
