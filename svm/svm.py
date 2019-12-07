@@ -1,4 +1,4 @@
-from sklearn.svm import LinearSVC
+from sklearn.svm import SVC
 import numpy as np
 from bag_of_features.BagOfFeatures import calculate_bag_of_features_for_default_dataset
 from sklearn.metrics import auc
@@ -6,11 +6,15 @@ from sklearn import metrics
 
 from sklearn.metrics import confusion_matrix
 import matplotlib.pyplot as plt
+from sklearn.model_selection import GridSearchCV
+from tempfile import mkdtemp
+from sklearn.externals.joblib import Memory
 
 
 class Svm(object):
     def __init__(self, c):
-        self._classifier = LinearSVC(random_state=0, tol=1e-5, C=c)
+        self._classifier = SVC(random_state=0, tol=1e-5, kernel="linear", probability=True)
+        self._c = c
 
     def train(self, features, labels):
         self._classifier.fit(features, labels)
@@ -19,14 +23,21 @@ class Svm(object):
         predicions = self._classifier.predict(features)
         return predicions
 
-    # def show_roc(self, test_bag_of_features, test_labels):
-    #     metrics.plot_roc_curve(self._classifier, test_bag_of_features, test_labels)
-    #
+    def show_roc(self, test_bag_of_features, test_labels):
+        c = self._c
+        w = list(self._classifier.coef_)
+        b = self._classifier.intercept_[0]
+        y_hat = test_bag_of_features.apply(lambda s: np.sum(np.array(s) * np.array(w)) + b, axis=1)
+        y_hat = (y_hat > c)
+        hi=5
 
 
 def calculate_svm_roc(train_bag_of_features, test_bag_of_features, train_labels, test_labels):
-    num_c_tries = 100
-    available_cs = np.logspace(start=-5, stop=10.0, num=num_c_tries, base=10.0)
+    num_c_tries = 1000
+    # available_cs = np.logspace(start=-5, stop=10.0, num=num_c_tries, base=10.0)
+    available_cs = np.linspace(0.00001, 100000, num_c_tries)
+    available_cs = 1 / available_cs
+    available_cs = np.hstack([available_cs, np.inf])
     true_positive_ratios = np.zeros(num_c_tries)
     false_positive_ratios = np.zeros(num_c_tries)
     for i, c in enumerate(available_cs):
@@ -48,18 +59,24 @@ def show_roc(true_positives, false_positives):
     plt.figure()
     plt.title("Roc curve")
     plt.xlabel('False positive ratio')
+    plt.xlim(0, 1)
+    plt.ylim(0, 1)
     plt.ylabel('True positive ratio')
-    plt.plot(false_positives, true_positives)
+    plt.scatter(false_positives, true_positives)
     plt.show(block=True)
-    print(f"roc auc: {roc_auc}")
+    # print(f"roc auc: {roc_auc}")
 
 
 if __name__ == "__main__":
     def main():
         train_bag_of_features, test_bag_of_features, train_labels, test_labels \
             = calculate_bag_of_features_for_default_dataset()
+        svm = Svm(c=1)
+        svm.train(train_bag_of_features, train_labels)
+        
+        # tpr, fpr = calculate_svm_roc(train_bag_of_features, test_bag_of_features, train_labels, test_labels)
+        # show_roc(tpr, fpr)
 
-        tpr, fpr = calculate_svm_roc(train_bag_of_features, test_bag_of_features, train_labels, test_labels)
-        show_roc(tpr, fpr)
+
 
     main()
