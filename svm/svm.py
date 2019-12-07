@@ -15,7 +15,7 @@ class Svm(object):
         self._aucs = []
 
     def train(self, features, labels, c):
-        self._classifier = SVC(random_state=0, tol=1e-5, kernel="linear", probability=True, C=c)
+        self._classifier = SVC(random_state=0, tol=1e-5, kernel="linear", probability=True, C=c, cache_size=50000)
         self._classifier.fit(features, labels)
         self._cs.append(c)
 
@@ -34,7 +34,7 @@ class Svm(object):
         self._aucs.append(roc_auc)
 
     def plot_rocs(self):
-        plt.figure()
+        plt.figure(figsize=(4, 4))
         plt.xlabel('False positive ratio')
         plt.xlim(0, 1)
         plt.ylim(0, 1)
@@ -53,7 +53,7 @@ if __name__ == "__main__":
         train_bag_of_features, test_bag_of_features, train_labels, test_labels \
             = calculate_bag_of_features_for_default_dataset()
 
-        c_values = [1e-3, 1e-2, 1e-1, 1e0, 1e1, 1e2, 1e3]
+        c_values = [1e-3, 1e-2, 1e-1,]# 1e0, 1e1, 1e2, 1e3, 1e4]
         svm = Svm()
         for c in c_values:
             svm.train(train_bag_of_features, train_labels, c)
