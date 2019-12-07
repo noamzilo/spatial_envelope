@@ -41,7 +41,8 @@ class Svm(object):
         plt.ylim(0, 1)
         plt.ylabel('True positive ratio')
         for fpr, tpr, c, auc_ in zip(self._fprs, self._tprs, self._cs, self._aucs):
-            plt.plot(fpr, tpr, label=f"c={c}, auc={auc_}")
+            plt.plot(fpr, tpr, label=f"c={c:.5f}, auc={auc_:.4f}")
+        plt.legend(loc="bottom right")
         plt.show(block=True)
 
 
@@ -50,7 +51,7 @@ if __name__ == "__main__":
         train_bag_of_features, test_bag_of_features, train_labels, test_labels \
             = calculate_bag_of_features_for_default_dataset()
 
-        c_values = np.logspace(-5, 5, 10)
+        c_values = [1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e0, 1e1, 1e2, 1e3, 1e4, 1e5]
         svm = Svm()
         for c in c_values:
             svm.train(train_bag_of_features, train_labels, c)
