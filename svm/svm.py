@@ -40,6 +40,7 @@ class Svm(object):
         plt.ylim(0, 1)
         plt.ylabel('True positive ratio')
         for fpr, tpr, c, auc_ in zip(self._fprs, self._tprs, self._cs, self._aucs):
+            print(f"fpr.shape[0]: {fpr.shape[0]}, c:{c}")
             if c < 1:
                 plt.plot(fpr, tpr, label=f"c={c:.5f}, auc={auc_:.4f}")
             else:
