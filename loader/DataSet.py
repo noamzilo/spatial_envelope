@@ -55,7 +55,7 @@ def load_default():
     path = '../spatial_envelope_256x256_static_8outdoorcategories'
     assert os.path.isdir(path)
     data_set.load_from_path(path)
-    data_set.split(test_size=0.2)
+    data_set.split(test_size=0.1)
     return data_set
 
 if __name__ == "__main__":
