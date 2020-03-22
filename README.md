@@ -6,7 +6,9 @@ http://people.csail.mit.edu/torralba/code/spatialenvelope/spatial_envelope_256x2
 
 using Bag of Words and SIFT
 
-Full report is under /report/report.docx
+under /report/report.docx
+
+you can find performance measurements using ROC AUC
 
 # BOW [Bag of Words]
 
