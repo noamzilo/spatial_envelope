@@ -1,8 +1,12 @@
 # spatial_envelope
 
 Classify images from 
+
 http://people.csail.mit.edu/torralba/code/spatialenvelope/spatial_envelope_256x256_static_8outdoorcategories.zip
+
 using Bag of Words and SIFT
+
+Full report is under /report/report.docx
 
 # BOW [Bag of Words]
 
